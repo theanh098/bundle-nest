@@ -7,19 +7,17 @@ import { DatabaseQueryError } from "@root/shared/errors/database-query-error";
 import { DatabaseQueryNotFoundError } from "@root/shared/errors/database-query-not-found-error";
 import type { Country } from "@root/shared/IO/Country";
 import type { PaginateResponse } from "@root/shared/IO/Paginate";
+import type { NonCtxEffect } from "@root/shared/types/non-context-effect";
 
 import { country } from "../models/country.model";
-
+import { Injectable } from "@nestjs/common";
+@Injectable()
 export class CountryRepository {
   constructor(@InjectDb() private db: Database) {}
 
   public findById(
     id: number
-  ): Effect.Effect<
-    never,
-    DatabaseQueryNotFoundError | DatabaseQueryError,
-    Country
-  > {
+  ): NonCtxEffect<DatabaseQueryNotFoundError | DatabaseQueryError, Country> {
     return pipe(
       Effect.tryPromise({
         try: () =>
@@ -44,11 +42,7 @@ export class CountryRepository {
     );
   }
 
-  public find(): Effect.Effect<
-    never,
-    DatabaseQueryError,
-    PaginateResponse<Country>
-  > {
+  public find(): NonCtxEffect<DatabaseQueryError, PaginateResponse<Country>> {
     return pipe(
       Effect.tryPromise({
         try: () =>
