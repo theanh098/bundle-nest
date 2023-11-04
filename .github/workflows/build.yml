@@ -83,7 +83,7 @@ jobs:
                         "type": "section",
                         "text": {
                             "type": "mrkdwn",
-                            "text": "${{env.EMOJI}} Build and test ${{ needs.build-and-test.result }}\n${{ github.event.pull_request.html_url }}"
+                            "text": "${{env.EMOJI}} Build and test are ${{ needs.build-and-test.result }}\n${{ github.event.pull_request.html_url }}"
                         }
                     }
                 ]
