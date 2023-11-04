@@ -1,0 +1,84 @@
+name: deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  setup-environment:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Setup docker compsose
+        shell: bash
+        run: |
+          - DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+          - mkdir -p $DOCKER_CONFIG/cli-plugins
+          - curl -SL https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+          - chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+          - chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+
+  bundle:
+    runs-on: ubuntu-lastest
+    needs: setup-environment
+    steps:
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Bundle
+        run: pnpm bundle
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: bundle
+    steps:
+      - name: Check lint
+        run: pnpm lint -- --max-warnings=0
+
+  test:
+    runs-on: ubuntu-latest
+    needs: bundle
+    steps:
+      - name: test
+        run: pnpm test
+
+  deliver:
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    steps:
+      - name: Upload bundle
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.INSTANCE_HOST }}
+          username: ${{ secrets.INSTANCE_USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          source: "bundle"
+          target: ~/nest-app
