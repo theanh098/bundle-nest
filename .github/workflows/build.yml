@@ -89,4 +89,4 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
       - name: echo emoji
-        run: echo ${{steps.set-emoji.outputs.emoji}}
+        run: echo "${{steps.set-emoji.outputs.emoji}}"
