@@ -1,0 +1,30 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Country {
+  id     Int    @id @default(autoincrement())
+  name   String @unique @db.VarChar(26)
+  cities City[]
+
+  @@map("country")
+}
+
+model City {
+  id         Int        @id @default(autoincrement())
+  name       String     @unique @db.VarChar(26)
+  popularity Popularity @default(unknown)
+  countryId  Int        @map("country_id")
+  country    Country    @relation(fields: [countryId], references: [id], onDelete: Cascade)
+
+  @@map("city")
+}
+
+enum Popularity {
+  unknown
+  known
+  popular
+
+  @@map("popularity")
+}
