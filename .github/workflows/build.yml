@@ -62,9 +62,9 @@ jobs:
         id: set-emoji
         run: |
           if [ ${{ needs.build-and-test.result }} = "success" ]; then
-            echo "{EMOJI}={:tada:}" >> $GITHUB_OUTPUT
+            echo "EMOJI=:tada:" >> $GITHUB_OUTPUT
           else
-            echo "{EMOJI}={:bangbang:}" >> $GITHUB_OUTPUT
+            echo "EMOJI=:bangbang:" >> $GITHUB_OUTPUT
           fi
 
       - name: post to a Slack channel
@@ -77,7 +77,7 @@ jobs:
           channel-id: "C063UHSFAQ7"
           payload: |
             {
-                "text": "$EMOJI Build workflow ${{ needs.build-and-test.result }}",
+                "text": "${{env.EMOJI}} Build workflow ${{ needs.build-and-test.result }}",
                 "blocks": [
                     {
                         "type": "section",
@@ -92,4 +92,4 @@ jobs:
       - name: echo emoji
         env:
           EMOJI: ${{ steps.set-emoji.outputs.EMOJI }}
-        run: echo "$EMOJI"
+        run: echo "${{env.EMOJI}}"
