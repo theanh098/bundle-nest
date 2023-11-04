@@ -77,7 +77,7 @@ jobs:
           channel-id: "C063UHSFAQ7"
           payload: |
             {
-                "text": "${{env.EMOJI}} Build workflow ${{ needs.build-and-test.result }}",
+                "text": "Build workflow :tada:",
                 "blocks": [
                     {
                         "type": "section",
