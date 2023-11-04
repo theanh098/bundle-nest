@@ -1,3 +1,4 @@
+import { Injectable } from "@nestjs/common";
 import { sql } from "drizzle-orm";
 import { Effect, flow, pipe } from "effect";
 
@@ -10,7 +11,6 @@ import type { PaginateResponse } from "@root/shared/IO/Paginate";
 import type { NonCtxEffect } from "@root/shared/types/non-context-effect";
 
 import { country } from "../models/country.model";
-import { Injectable } from "@nestjs/common";
 @Injectable()
 export class CountryRepository {
   constructor(@InjectDb() private db: Database) {}

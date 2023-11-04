@@ -62,9 +62,9 @@ jobs:
         id: set-emoji
         run: |
           if [ ${{ needs.build-and-test.result }} = "success" ]; then
-            echo "::set-output name=emoji:::tada:"
+            echo "{emoji}={:tada:}" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=emoji:::bangbang:"
+            echo "{emoji}={:bangbang:}" >> $GITHUB_OUTPUT
           fi
 
       - name: post to a Slack channel
@@ -74,13 +74,13 @@ jobs:
           channel-id: "C063UHSFAQ7"
           payload: |
             {
-                "text": ":bangbang: Build result: ${{ needs.build-and-test.result }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+                "text": "${{steps.set-emoji.outputs.emoji}} Build result: ${{ needs.build-and-test.result }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
                 "blocks": [
                     {
                         "type": "section",
                         "text": {
                             "type": "mrkdwn",
-                            "text": "Build result: ${{ needs.build-and-test.result }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+                            "text": "Build ${{ needs.build-and-test.result }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
                         }
                     }
                 ]
