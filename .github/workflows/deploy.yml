@@ -37,42 +37,37 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-      - name: Setup docker compsose
-        shell: bash
-        run: |
-          DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
-          mkdir -p $DOCKER_CONFIG/cli-plugins
-          curl -SL https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
-          chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
-          chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+      - name: Install dependencies
+        run: pnpm install
 
   bundle:
     runs-on: ubuntu-lastest
     needs: setup-environment
     steps:
-      - name: Install dependencies
-        run: pnpm install
-
       - name: Bundle
         run: pnpm bundle
 
   lint:
     runs-on: ubuntu-latest
-    needs: bundle
+    needs: setup-environment
     steps:
       - name: Check lint
         run: pnpm lint -- --max-warnings=0
 
   test:
     runs-on: ubuntu-latest
-    needs: bundle
+    needs: setup-environment
     steps:
       - name: test
-        run: pnpm test
+        shell: bash
+        run: |
+          curl -SL https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+          chmod +x /usr/local/bin/docker-compose
+          pnpm test
 
   deliver:
     runs-on: ubuntu-latest
-    needs: [lint, test]
+    needs: [bundle, lint, test]
     steps:
       - name: Upload bundle
         uses: appleboy/scp-action@v0.1.4
