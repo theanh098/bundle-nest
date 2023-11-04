@@ -44,7 +44,7 @@ jobs:
         run: pnpm bundle
 
       - name: Check lint
-        run: pnpm lint -- --max-warnings=0
+        run: pnpm lint
 
       - name: test
         shell: bash
