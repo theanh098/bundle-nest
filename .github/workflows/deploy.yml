@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  setup-environment:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -40,24 +40,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-  bundle:
-    runs-on: ubuntu-lastest
-    needs: setup-environment
-    steps:
       - name: Bundle
         run: pnpm bundle
 
-  lint:
-    runs-on: ubuntu-latest
-    needs: setup-environment
-    steps:
       - name: Check lint
         run: pnpm lint -- --max-warnings=0
 
-  test:
-    runs-on: ubuntu-latest
-    needs: setup-environment
-    steps:
       - name: test
         shell: bash
         run: |
@@ -65,10 +53,6 @@ jobs:
           chmod +x /usr/local/bin/docker-compose
           pnpm test
 
-  deliver:
-    runs-on: ubuntu-latest
-    needs: [bundle, lint, test]
-    steps:
       - name: Upload bundle
         uses: appleboy/scp-action@v0.1.4
         with:
