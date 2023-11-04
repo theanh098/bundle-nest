@@ -8,7 +8,7 @@ import { DatabaseQueryError } from "@root/shared/errors/database-query-error";
 import { DatabaseQueryNotFoundError } from "@root/shared/errors/database-query-not-found-error";
 import type { Country } from "@root/shared/IO/Country";
 import type { PaginateResponse } from "@root/shared/IO/Paginate";
-import { NonCtxEffect } from "@root/shared/types/non-context-effect";
+import type { NonCtxEffect } from "@root/shared/types/non-context-effect";
 
 import { country } from "../models/country.model";
 @Injectable()
