@@ -80,17 +80,13 @@ jobs:
                         "type": "section",
                         "text": {
                             "type": "mrkdwn",
-                            "text": "${{steps.set-emoji.outputs.emoji}} Build ${{ needs.build-and-test.result }}\n${{ github.event.pull_request.html_url }}"
-                        }
-                    },
-                    {
-                        "type":"section",
-                        "text": {
-                            "type": "mrkdwn",
-                            "text": "At commit ${{ github.event.head_commit.url }}"
+                            "text": "Build ${{ needs.build-and-test.result }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
                         }
                     }
                 ]
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+      - name: echo emoji
+        run: echo ${{steps.set-emoji.outputs.emoji}}
