@@ -14,8 +14,9 @@ export class MissingEnvironmentError implements AnyHow {
   public _tag = MissingEnvironmentError._tag;
 
   public endCode(): InternalServerErrorException {
-    return new InternalServerErrorException(
-      `Missing environment: ${this.config}`
-    );
+    return new InternalServerErrorException({
+      cause: this._tag.description,
+      message: `Missing environment: ${this.config}`
+    });
   }
 }

@@ -15,8 +15,11 @@ export class InfrastructureError implements AnyHow {
   public _tag = InfrastructureError._tag;
 
   public endCode(): InternalServerErrorException {
-    return new InternalServerErrorException(
-      `Infrastructure error with reason: ${toError(this.error).message}`
-    );
+    return new InternalServerErrorException({
+      cause: this._tag.description,
+      message: `Infrastructure error with reason: ${
+        toError(this.error).message
+      }`
+    });
   }
 }

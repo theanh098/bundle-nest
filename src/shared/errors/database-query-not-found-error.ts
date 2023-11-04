@@ -21,7 +21,7 @@ export class DatabaseQueryNotFoundError implements AnyHow {
 
   public endCode(): InternalServerErrorException {
     return new InternalServerErrorException({
-      _tag: this._tag,
+      cause: this._tag.description,
       message: `Not found record on table ${this.query.table} with ${this.query.column} = ${this.query.value}`
     });
   }

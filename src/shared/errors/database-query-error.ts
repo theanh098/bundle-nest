@@ -16,7 +16,7 @@ export class DatabaseQueryError implements AnyHow {
 
   public endCode(): InternalServerErrorException {
     return new InternalServerErrorException({
-      _tag: this._tag,
+      cause: this._tag.description,
       message: `Database query error with reason ${toError(this.error).message}`
     });
   }
