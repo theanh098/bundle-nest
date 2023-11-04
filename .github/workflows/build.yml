@@ -58,6 +58,15 @@ jobs:
     needs: build-and-test
     if: always()
     steps:
+      - name: Set Emoji
+        id: set-emoji
+        run: |
+          if [ ${{ needs.build-and-test.result }} = "success" ]; then
+            echo "::set-output name=emoji:::tada:"
+          else
+            echo "::set-output name=emoji:::bangbang:"
+          fi
+
       - name: post to a Slack channel
         id: slack
         uses: slackapi/slack-github-action@v1.24.0
@@ -65,13 +74,13 @@ jobs:
           channel-id: "C063UHSFAQ7"
           payload: |
             {
-                "text": "Build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+                "text": "${{steps.set-emoji.outputs.emoji}} Build result: ${{ needs.build-and-test.result }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
                 "blocks": [
                     {
                         "type": "section",
                         "text": {
                             "type": "mrkdwn",
-                            "text": "Build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+                            "text": "Build result: ${{ needs.build-and-test.result }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
                         }
                     }
                 ]
