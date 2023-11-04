@@ -86,6 +86,7 @@ jobs:
                     {
                         "type":"section",
                         "text": {
+                            "type": "mrkdwn",
                             "text": "At commit ${{ github.event.head_commit.url }}"
                         }
                     }
