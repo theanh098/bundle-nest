@@ -74,13 +74,19 @@ jobs:
           channel-id: "C063UHSFAQ7"
           payload: |
             {
-                "text": "${{steps.set-emoji.outputs.emoji}} Build workflow ${{ needs.build-and-test.result }}",
+                "text": "Build workflow ${{ needs.build-and-test.result }}",
                 "blocks": [
                     {
                         "type": "section",
                         "text": {
                             "type": "mrkdwn",
-                            "text": ":tada: Build ${{ needs.build-and-test.result }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+                            "text": "${{steps.set-emoji.outputs.emoji}} Build ${{ needs.build-and-test.result }}\n${{ github.event.pull_request.html_url }}"
+                        }
+                    },
+                    {
+                        "type":"section",
+                        "text": {
+                            "text": "At commit ${{ github.event.head_commit.url }}"
                         }
                     }
                 ]
