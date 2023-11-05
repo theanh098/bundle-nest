@@ -80,24 +80,35 @@ jobs:
   ping-on-slack:
     runs-on: ubuntu-latest
     needs: restart-server
+    if: always()
     steps:
+      - name: Set Emoji
+        id: set-emoji
+        run: |
+          if [ ${{ needs.restart-server.result }} = "success" ]; then
+            echo "EMOJI=:tada:" >> $GITHUB_OUTPUT
+          else
+            echo "EMOJI=:bangbang:" >> $GITHUB_OUTPUT
+          fi
+
       - name: post to a Slack channel
+        env:
+          EMOJI: ${{ steps.set-emoji.outputs.EMOJI }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         id: slack
         uses: slackapi/slack-github-action@v1.24.0
         with:
           channel-id: "C063UHSFAQ7"
           payload: |
             {
-                "text": "Deploy result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+                "text": "${{env.EMOJI}} Deployment workflow",
                 "blocks": [
                     {
                         "type": "section",
                         "text": {
                             "type": "mrkdwn",
-                            "text": "Deploy result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+                            "text": "${{env.EMOJI}} Deployment process is ${{ needs.restart-server.result }}\n${{ github.event.pull_request.html_url }}"
                         }
                     }
                 ]
             }
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
