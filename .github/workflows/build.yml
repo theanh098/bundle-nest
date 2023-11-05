@@ -1,7 +1,7 @@
-name: deploy
+name: build
 
 on:
-  push:
+  pull_request:
     branches:
       - main
 
@@ -53,39 +53,15 @@ jobs:
           sudo chmod +x /usr/local/bin/docker-compose
           pnpm test
 
-      - name: Upload bundle
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.INSTANCE_HOST }}
-          username: ${{ secrets.INSTANCE_USERNAME }}
-          key: ${{ secrets.PRIVATE_KEY }}
-          source: "bundle"
-          target: ~/nest-app
-
-  restart-server:
-    runs-on: ubuntu-latest
-    needs: build-and-test
-    steps:
-      - name: restart server via SSH
-        uses: appleboy/ssh-action@v0.1.4
-        with:
-          host: ${{ secrets.DEV_SERVER_HOST }}
-          username: ${{ secrets.DEV_SERVER_USERNAME }}
-          key: ${{ secrets.DEV_SERVER_SSH_PRIVATE_KEY }}
-          script: |
-            export NVM_DIR=~/.nvm
-            source ~/.nvm/nvm.sh
-            pm2 restart all
-
   ping-on-slack:
     runs-on: ubuntu-latest
-    needs: restart-server
+    needs: build-and-test
     if: always()
     steps:
       - name: Set Emoji
         id: set-emoji
         run: |
-          if [ ${{ needs.restart-server.result }} = "success" ]; then
+          if [ ${{ needs.build-and-test.result }} = "success" ]; then
             echo "EMOJI=:tada:" >> $GITHUB_OUTPUT
           else
             echo "EMOJI=:bangbang:" >> $GITHUB_OUTPUT
@@ -101,13 +77,13 @@ jobs:
           channel-id: "C063UHSFAQ7"
           payload: |
             {
-                "text": "${{env.EMOJI}} Deployment workflow",
+                "text": "${{env.EMOJI}} Building workflow",
                 "blocks": [
                     {
                         "type": "section",
                         "text": {
                             "type": "mrkdwn",
-                            "text": "${{env.EMOJI}} Deployment process is ${{ needs.restart-server.result }}\n${{ github.event.pull_request.html_url }}"
+                            "text": "${{env.EMOJI}} Build and test are ${{ needs.build-and-test.result }}\n${{ github.event.pull_request.html_url }}"
                         }
                     }
                 ]

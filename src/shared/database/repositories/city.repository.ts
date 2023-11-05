@@ -6,6 +6,7 @@ import { InjectDb } from "@root/shared/decorators/database.decorator";
 import { DatabaseQueryError } from "@root/shared/errors/database-query-error";
 import { DatabaseQueryNotFoundError } from "@root/shared/errors/database-query-not-found-error";
 import type { City } from "@root/shared/IO/City";
+import type { NonCtxEffect } from "@root/shared/types/non-context-effect";
 
 @Injectable()
 export class CityRepository {
@@ -13,11 +14,7 @@ export class CityRepository {
 
   public findById(
     id: number
-  ): Effect.Effect<
-    never,
-    DatabaseQueryError | DatabaseQueryNotFoundError,
-    City
-  > {
+  ): NonCtxEffect<DatabaseQueryError | DatabaseQueryNotFoundError, City> {
     return pipe(
       Effect.tryPromise({
         try: () =>
