@@ -1,8 +1,9 @@
 import { Controller, Get, Param } from "@nestjs/common";
 
-import { genericPromise } from "@root/shared/helpers/generic-promise";
 import type { Country } from "@root/shared/IO/Country";
 import type { PaginateResponse } from "@root/shared/IO/Paginate";
+
+import { genericPromise } from "@root/shared/helpers/generic-promise";
 
 import { CountryService } from "./country.service";
 

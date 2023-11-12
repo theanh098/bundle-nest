@@ -1,7 +1,8 @@
 import { InternalServerErrorException } from "@nestjs/common";
 
-import { toError } from "../helpers/to-error";
 import type { AnyHow } from "./encode";
+
+import { toError } from "../helpers/to-error";
 
 export class DatabaseQueryError implements AnyHow {
   static readonly _tag: unique symbol = Symbol("MissingEnvironmentErrorTag");

@@ -48,8 +48,9 @@ module.exports = {
         newlinesBetween: "always",
         groups: [
           "module",
-          ["/^@root/"],
-          ["parent", "sibling", "index", "type"]
+          "type",
+          "/^@root/"
+          // ["parent", "sibling", "index", "type"]
         ],
         alphabetize: {
           order: "asc",

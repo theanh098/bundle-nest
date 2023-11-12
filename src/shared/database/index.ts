@@ -1,6 +1,7 @@
+import { pgSchema } from "drizzle-orm/pg-core";
+
 import type { NodePgDatabase } from "drizzle-orm/node-postgres";
 import { drizzle } from "drizzle-orm/node-postgres";
-import { pgSchema } from "drizzle-orm/pg-core";
 import type { PoolConfig } from "pg";
 import { Pool } from "pg";
 

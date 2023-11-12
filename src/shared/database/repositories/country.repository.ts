@@ -2,15 +2,17 @@ import { Injectable } from "@nestjs/common";
 import { sql } from "drizzle-orm";
 import { Effect, flow, pipe } from "effect";
 
-import { Database } from "@root/shared/database";
-import { InjectDb } from "@root/shared/decorators/database.decorator";
-import { DatabaseQueryError } from "@root/shared/errors/database-query-error";
-import { DatabaseQueryNotFoundError } from "@root/shared/errors/database-query-not-found-error";
 import type { Country } from "@root/shared/IO/Country";
 import type { PaginateResponse } from "@root/shared/IO/Paginate";
 import type { NonCtxEffect } from "@root/shared/types/non-context-effect";
 
+import { Database } from "@root/shared/database";
+import { InjectDb } from "@root/shared/decorators/database.decorator";
+import { DatabaseQueryError } from "@root/shared/errors/database-query-error";
+import { DatabaseQueryNotFoundError } from "@root/shared/errors/database-query-not-found-error";
+
 import { country } from "../models/country.model";
+
 @Injectable()
 export class CountryRepository {
   constructor(@InjectDb() private db: Database) {}

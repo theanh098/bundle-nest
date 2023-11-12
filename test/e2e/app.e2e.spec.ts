@@ -1,8 +1,9 @@
+import request from "supertest";
+import { beforeEach, it, test } from "vitest";
+
 import type { INestApplication } from "@nestjs/common";
 import type { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
-import request from "supertest";
-import { beforeEach, it, test } from "vitest";
 
 import { AppModule } from "../../src/app.module";
 
