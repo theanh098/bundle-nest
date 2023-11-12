@@ -1,7 +1,7 @@
 import type { HttpException } from "@nestjs/common";
 
 export type AnyHow<T extends HttpException = HttpException> = {
-  _tag: symbol;
+  _tag: string;
   endCode: () => T;
 };
 

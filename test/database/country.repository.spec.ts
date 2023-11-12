@@ -67,7 +67,7 @@ describe("CountryRepository", () => {
               onRight: () => {
                 throw Error("unexpected succeed");
               },
-              onLeft: e => expect(DatabaseQueryError.isBounded(e)).toBe(true)
+              onLeft: e => expect(DatabaseQueryError.isInfer(e)).toBe(true)
             })
           )
         );

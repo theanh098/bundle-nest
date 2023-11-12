@@ -3,19 +3,19 @@ import { InternalServerErrorException } from "@nestjs/common";
 import type { AnyHow } from "./encode";
 
 export class MissingEnvironmentError implements AnyHow {
-  static readonly _tag: unique symbol = Symbol("MissingEnvironmentErrorTag");
+  static readonly _tag = "MissingEnvironmentError";
 
-  static isBounded(err: AnyHow): err is MissingEnvironmentError {
+  static isInfer(err: AnyHow): err is MissingEnvironmentError {
     return MissingEnvironmentError._tag === err._tag;
   }
 
-  constructor(public config: string) {}
+  constructor(public readonly config: string) {}
 
-  public _tag = MissingEnvironmentError._tag;
+  public readonly _tag = MissingEnvironmentError._tag;
 
   public endCode(): InternalServerErrorException {
     return new InternalServerErrorException({
-      cause: this._tag.description,
+      cause: this._tag,
       message: `Missing environment: ${this.config}`
     });
   }

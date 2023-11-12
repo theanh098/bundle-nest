@@ -11,6 +11,6 @@ export class CountryService {
   }
 
   public getCountryList() {
-    return this.countryRepository.find();
+    return this.countryRepository.findAndCount();
   }
 }
