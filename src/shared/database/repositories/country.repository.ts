@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { sql } from "drizzle-orm";
-import { Chunk, Data, Effect, Option, ReadonlyArray, flow, pipe } from "effect";
+import { Effect, Option, ReadonlyArray, flow, pipe } from "effect";
 
 import type { Country } from "@root/shared/IO/Country";
 import type { PaginateResponse } from "@root/shared/IO/Paginate";
