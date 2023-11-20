@@ -20,12 +20,12 @@
     "test:unit": "TEST_DIR=unit vitest run",
     "test:e2e": "TEST_DIR=e2e vitest run",
     "test:debug": "vitest --inspect-brk --inspect --logHeapUsage --threads=false",
-    "test:setup": "DATABASE_URL=postgresql://postgres:test@localhost:6000/db_test pnpm exec prisma db push --force-reset --skip-generate",
-    "test:db:cleanup": "pnpm exec ts-node ./scripts/clean-testing-database.ts",
+    "test:setup": "DATABASE_URL=postgresql://postgres:test@localhost:6000/db_test prisma db push --force-reset --skip-generate",
+    "test:db:cleanup": "ts-node ./scripts/clean-testing-database.ts",
     "pretest:database": "POSTGRES_USER=postgres POSTGRES_PASSWORD=test POSTGRES_DB=db_test docker compose -f ./test-helper/docker-compose.yml up -d",
     "test:database": "pnpm pretest:database && pnpm test:setup && TEST_DIR=database vitest run --sequence.shuffle --single-thread && pnpm test:db:cleanup",
     "test:cov": "vitest run --coverage",
-    "db:push": "pnpm exec prisma db push --skip-generate"
+    "db:push": "dotenv -e config/.local.env prisma db push --skip-generate"
   },
   "dependencies": {
     "@anatine/zod-nestjs": "^2.0.3",
@@ -54,6 +54,7 @@
     "@typescript-eslint/eslint-plugin": "^6.11.0",
     "@typescript-eslint/parser": "^6.11.0",
     "@vitest/coverage-v8": "^0.34.6",
+    "dotenv-cli": "^7.3.0",
     "esbuild": "^0.19.5",
     "esbuild-plugin-tsc": "^0.4.0",
     "eslint": "^8.54.0",

@@ -10,7 +10,10 @@ import { DrizzleModule } from "./drizzle/drizzle.module";
   imports: [
     DrizzleModule,
     CountryModule,
-    ConfigModule.forRoot({ isGlobal: true })
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `config/.${process.env.ENV || "local"}.env`
+    })
   ],
   controllers: [AppController],
   providers: [AppService]
