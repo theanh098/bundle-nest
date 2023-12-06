@@ -1,7 +1,8 @@
 import { createSelectSchema } from "drizzle-zod";
+import { z } from "zod";
+
 import { country } from "../database/models/country.model";
 import { citySchema } from "./City";
-import { z } from "zod";
 
 export const countrySchema = createSelectSchema(country);
 

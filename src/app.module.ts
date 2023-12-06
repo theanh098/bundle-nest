@@ -3,9 +3,9 @@ import { ConfigModule } from "@nestjs/config";
 
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
+import { CommandModule } from "./command/command.module";
 import { CountryModule } from "./country/country.module";
 import { DrizzleModule } from "./drizzle/drizzle.module";
-import { CommandModule } from './command/command.module';
 
 @Module({
   imports: [

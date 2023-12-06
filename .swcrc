@@ -9,5 +9,5 @@
     },
     "baseUrl": "./"
   },
-  "minify": true
+  "minify": false
 }

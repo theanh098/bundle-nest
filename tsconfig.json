@@ -25,6 +25,7 @@
     "noImplicitReturns": true,
     "inlineSources": true,
     "esModuleInterop": true,
+    "isolatedModules": true,
     "typeRoots": ["./node_modules/@types"],
     "noErrorTruncation": true,
     "paths": {

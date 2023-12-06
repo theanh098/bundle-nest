@@ -1,8 +1,10 @@
-import { Command, CommandRunner, Option } from "nest-commander";
+import { Command, CommandRunner } from "nest-commander";
 
 @Command({ name: "basic", description: "A parameter parse" })
 export class BasicCommand extends CommandRunner {
-  async run(args: string[]): Promise<void> {
+  run(args: string[]): Promise<void> {
     console.log("args: ", args);
+
+    return Promise.resolve();
   }
 }

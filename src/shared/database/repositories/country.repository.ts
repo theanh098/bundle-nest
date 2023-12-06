@@ -74,7 +74,7 @@ export class CountryRepository {
         this.db.query.country.findMany({
           offset: 0,
           limit: 10,
-          orderBy: ({ id }, { desc }) => Array(desc(id), desc(id))
+          orderBy: ({ id }, { desc }) => [desc(id), desc(id)]
         }),
       catch: e => new DatabaseQueryError(e)
     });
