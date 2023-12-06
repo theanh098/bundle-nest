@@ -12,8 +12,6 @@ import { readConfigOrExit } from "@root/shared/helpers/read-config";
 @Module({
   exports: [CityRepository, CountryRepository],
   providers: [
-    CityRepository,
-    CountryRepository,
     {
       provide: DATABASE,
       useFactory: (configService: ConfigService): Database =>
@@ -21,7 +19,9 @@ import { readConfigOrExit } from "@root/shared/helpers/read-config";
           connectionString: readConfigOrExit(configService)("DATABASE_URL")
         }),
       inject: [ConfigService]
-    }
+    },
+    CityRepository,
+    CountryRepository
   ]
 })
 export class DrizzleModule {}

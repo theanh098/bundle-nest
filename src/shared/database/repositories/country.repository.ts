@@ -19,18 +19,23 @@ export class CountryRepository {
 
   public findById(
     id: number
-  ): NonCtxEffect<
-    DatabaseQueryNotFoundError | DatabaseQueryError,
-    Country | number
-  > {
+  ): NonCtxEffect<DatabaseQueryNotFoundError | DatabaseQueryError, Country> {
     return pipe(
       Effect.tryPromise({
         try: () =>
           this.db.query.country.findFirst({
-            where: (cols, opts) => opts.eq(cols.id, id)
+            where: (cols, opts) => opts.eq(cols.id, id),
+            with: {
+              cities: {
+                columns: {
+                  id: true
+                }
+              }
+            }
           }),
         catch: err => new DatabaseQueryError(err)
       }),
+      Effect.map(k => k),
       Effect.flatMap(
         flow(
           Effect.fromNullable,
@@ -68,7 +73,8 @@ export class CountryRepository {
       try: () =>
         this.db.query.country.findMany({
           offset: 0,
-          limit: 10
+          limit: 10,
+          orderBy: ({ id }, { desc }) => Array(desc(id), desc(id))
         }),
       catch: e => new DatabaseQueryError(e)
     });
