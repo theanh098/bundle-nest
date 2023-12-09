@@ -6,8 +6,9 @@ import type { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
 
 import { AppModule } from "../../src/app.module";
+import { describe } from "node:test";
 
-test("AppController (e2e)", () => {
+describe("AppController (e2e)", () => {
   let app: INestApplication;
 
   beforeEach(async () => {
