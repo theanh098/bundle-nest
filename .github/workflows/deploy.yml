@@ -59,7 +59,7 @@ jobs:
           host: ${{ secrets.INSTANCE_HOST }}
           username: ${{ secrets.INSTANCE_USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
-          source: "bundle"
+          source: "build,config"
           target: ~/nest-app
 
   restart-server:
