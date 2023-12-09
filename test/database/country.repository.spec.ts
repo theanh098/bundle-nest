@@ -13,7 +13,7 @@ import {
 
 import { country } from "@root/shared/database/models/country.model";
 import { CountryRepository } from "@root/shared/database/repositories/country.repository";
-import { DatabaseQueryError } from "@root/shared/errors/database-query-error";
+import { DatabaseQueryError } from "@root/shared/errors/database-query.error";
 
 describe("CountryRepository", () => {
   let countryRepository: CountryRepository;
