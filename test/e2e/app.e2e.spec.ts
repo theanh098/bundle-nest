@@ -24,7 +24,7 @@ describe("AppController (e2e)", () => {
     return request(app.getHttpServer())
       .get("/")
       .expect(res => {
-        expect(res.ok).to;
+        expect(res.ok).toBeTruthy();
         expect(res.text).toBe("Hello Kitty!");
       });
   });

@@ -8,8 +8,6 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    console.log("ru nbao af asf afj[]apsf ");
-
     return this.appService.getHello();
   }
 }

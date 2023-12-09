@@ -1,6 +1,9 @@
 import { InternalServerErrorException } from "@nestjs/common";
+import { Effect } from "effect";
 
 import type { AnyHow } from ".";
+import type { BlazingTable } from "../database";
+import type { NonCtxEffect } from "../types/non-context-effect.type";
 
 export class DatabaseQueryNotFoundError implements AnyHow {
   static readonly _tag = "DatabaseQueryNotFoundError";
@@ -9,12 +12,16 @@ export class DatabaseQueryNotFoundError implements AnyHow {
     return DatabaseQueryNotFoundError._tag === err._tag;
   }
 
+  static into(
+    table: BlazingTable,
+    args: unknown
+  ): NonCtxEffect<DatabaseQueryNotFoundError, never> {
+    return Effect.fail(new DatabaseQueryNotFoundError(table, args));
+  }
+
   constructor(
-    public readonly query: {
-      table: string;
-      column: string;
-      value: string | number | boolean | null | undefined;
-    }
+    public readonly table: BlazingTable,
+    public readonly args: unknown
   ) {}
 
   public readonly _tag = DatabaseQueryNotFoundError._tag;
@@ -22,7 +29,9 @@ export class DatabaseQueryNotFoundError implements AnyHow {
   public endCode(): InternalServerErrorException {
     return new InternalServerErrorException({
       cause: this._tag,
-      message: `Not found record on table ${this.query.table} with ${this.query.column} = ${this.query.value}`
+      message: `Not found record on table ${this.table} with ${JSON.stringify(
+        this.args
+      )}`
     });
   }
 }

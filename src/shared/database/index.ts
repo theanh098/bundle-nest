@@ -27,6 +27,8 @@ const schema = {
 
 export type Database = NodePgDatabase<typeof schema>;
 
+export type BlazingTable = (typeof tables)[keyof typeof tables]["_"]["name"];
+
 export const drizzleSchema = pgSchema("drizzle");
 
 export const getDatabase = (config: PoolConfig): Database => {

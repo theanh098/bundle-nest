@@ -8,7 +8,7 @@ model Country {
   name   String @unique @db.VarChar(26)
   cities City[]
 
-  @@map("country")
+  @@map("countries")
 }
 
 model City {
@@ -18,7 +18,7 @@ model City {
   countryId  Int        @map("country_id")
   country    Country    @relation(fields: [countryId], references: [id], onDelete: Cascade)
 
-  @@map("city")
+  @@map("cities")
 }
 
 enum Popularity {

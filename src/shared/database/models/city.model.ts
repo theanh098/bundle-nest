@@ -9,7 +9,7 @@ export const popularityEnum = pgEnum("popularity", [
   "popular"
 ]);
 
-export const city = pgTable("city", {
+export const city = pgTable("cities", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 26 }).notNull().unique(),
   popularity: popularityEnum("popularity").notNull().default("unknown"),
