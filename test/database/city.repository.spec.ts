@@ -1,16 +1,16 @@
 import { eq } from "drizzle-orm";
 import { Effect, Either, pipe } from "effect";
 import { testDatabase } from "test-helper/database.test.client";
-import {
-  afterEach,
-  beforeAll,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  suite,
-  vi
-} from "vitest";
+// import {
+//   afterEach,
+//   beforeAll,
+//   beforeEach,
+//   describe,
+//   expect,
+//   it,
+//   suite,
+//   vi
+// } from "vitest";
 
 import { city } from "@root/shared/database/models/city.model";
 import { country } from "@root/shared/database/models/country.model";
@@ -25,10 +25,10 @@ describe("CityRepository", () => {
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
+    jest.restoreAllMocks();
   });
 
-  suite("findById", () => {
+  describe("findById", () => {
     describe("happy path", () => {
       beforeEach(async () => {
         await testDatabase.insert(country).values({
@@ -70,9 +70,9 @@ describe("CityRepository", () => {
 
     describe("negative path", () => {
       it("should return DatabaseQueryError", () => {
-        vi.spyOn(testDatabase.query.city, "findFirst").mockRejectedValue(
-          new Error("query err")
-        );
+        jest
+          .spyOn(testDatabase.query.city, "findFirst")
+          .mockRejectedValue(new Error("query err"));
         pipe(cityRepository.findById(1), Effect.either, Effect.runPromise).then(
           Either.match({
             onLeft: error => {
