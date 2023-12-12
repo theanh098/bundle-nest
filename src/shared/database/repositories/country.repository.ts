@@ -27,7 +27,7 @@ export class CountryRepository {
         with: {
           cities: {
             columns: {
-              id: true
+              name: true
             }
           }
         }

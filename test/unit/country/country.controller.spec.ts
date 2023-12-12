@@ -1,6 +1,6 @@
 import { Test } from "@nestjs/testing";
 import { Effect } from "effect";
-import { afterEach, beforeAll, expect, it, vi, describe } from "vitest";
+import { afterEach, beforeAll, describe, expect, it, suite, vi } from "vitest";
 
 import type { Country } from "@root/shared/IO/Country.io";
 
@@ -25,7 +25,7 @@ describe("CatsController", () => {
     vi.restoreAllMocks();
   });
 
-  describe("getCountry", () => {
+  suite("getCountry", () => {
     it("should return a country correctly", async () => {
       const mockCountry: Country = { id: 1, name: "india" };
 
