@@ -28,7 +28,9 @@
     "isolatedModules": true,
     "typeRoots": ["./node_modules/@types"],
     "paths": {
-      "@root/*": ["src/*"]
+      "@root/*": ["src/*"],
+      "@test/*": ["test/*"],
+      "@test-helper/*": ["test-helper/*"]
     }
   },
   "ts-node": {

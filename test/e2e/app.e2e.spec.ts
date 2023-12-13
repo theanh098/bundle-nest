@@ -1,6 +1,5 @@
 import { describe } from "node:test";
 import request from "supertest";
-import { beforeEach, expect, it } from "vitest";
 
 import type { INestApplication } from "@nestjs/common";
 import type { TestingModule } from "@nestjs/testing";
@@ -20,12 +19,11 @@ describe("AppController (e2e)", () => {
     await app.init();
   });
 
-  it("/ (GET)", () => {
-    return request(app.getHttpServer())
+  it("/ (GET)", () =>
+    request(app.getHttpServer())
       .get("/")
       .expect(res => {
         expect(res.ok).toBeTruthy();
         expect(res.text).toBe("Hello Kitty!");
-      });
-  });
+      }));
 });

@@ -19,7 +19,7 @@ const tables = {
   country
 };
 
-const schema = {
+export const schema = {
   ...tables,
   cityCountryRelations,
   countryCityRelations
@@ -33,6 +33,7 @@ export const drizzleSchema = pgSchema("drizzle");
 
 export const getDatabase = (config: PoolConfig): Database => {
   const pool = new Pool(config);
+
   return drizzle(pool, {
     schema
   });

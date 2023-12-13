@@ -1,16 +1,6 @@
+import { TestDatabse } from "@test-helper/database.test.client";
 import { eq } from "drizzle-orm";
 import { Effect, Either, pipe } from "effect";
-import { testDatabase } from "test-helper/database.test.client";
-// import {
-//   afterEach,
-//   beforeAll,
-//   beforeEach,
-//   describe,
-//   expect,
-//   it,
-//   suite,
-//   vi
-// } from "vitest";
 
 import { city } from "@root/shared/database/models/city.model";
 import { country } from "@root/shared/database/models/country.model";
@@ -18,25 +8,30 @@ import { CityRepository } from "@root/shared/database/repositories/city.reposito
 import { DatabaseQueryError } from "@root/shared/errors/database-query.error";
 
 describe("CityRepository", () => {
+  const client = new TestDatabse();
   let cityRepository: CityRepository;
 
   beforeAll(() => {
-    cityRepository = new CityRepository(testDatabase);
+    cityRepository = new CityRepository(client.database);
   });
 
   afterEach(() => {
     jest.restoreAllMocks();
   });
 
+  afterAll(async () => {
+    await client.disconnect();
+  });
+
   describe("findById", () => {
     describe("happy path", () => {
       beforeEach(async () => {
-        await testDatabase.insert(country).values({
+        await client.database.insert(country).values({
           name: "India",
           id: 1
         });
 
-        await testDatabase.insert(city).values({
+        await client.database.insert(city).values({
           countryId: 1,
           id: 1,
           name: "Mumbai",
@@ -45,8 +40,8 @@ describe("CityRepository", () => {
       });
 
       afterEach(async () => {
-        await testDatabase.delete(city).where(eq(city.id, 1));
-        await testDatabase.delete(country).where(eq(country.id, 1));
+        await client.database.delete(city).where(eq(city.id, 1));
+        await client.database.delete(country).where(eq(country.id, 1));
       });
 
       it("should return correct city", () => {
@@ -71,7 +66,7 @@ describe("CityRepository", () => {
     describe("negative path", () => {
       it("should return DatabaseQueryError", () => {
         jest
-          .spyOn(testDatabase.query.city, "findFirst")
+          .spyOn(client.database.query.city, "findFirst")
           .mockRejectedValue(new Error("query err"));
         pipe(cityRepository.findById(1), Effect.either, Effect.runPromise).then(
           Either.match({

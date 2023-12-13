@@ -1,6 +1,5 @@
 import { Test } from "@nestjs/testing";
 import { Effect } from "effect";
-// import { afterEach, beforeAll, describe, expect, it, suite, vi } from "vitest";
 
 import type { Country } from "@root/shared/IO/Country.io";
 
@@ -29,9 +28,6 @@ describe("CatsController", () => {
 
   describe("getCountry", () => {
     it("should return a country correctly", async () => {
-      console.log("countryService: ", countryService);
-      console.log("countryController: ", countryController);
-
       const mockCountry: Country = { id: 1, name: "india" };
 
       jest
