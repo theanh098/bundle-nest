@@ -1,8 +1,8 @@
 import { InternalServerErrorException } from "@nestjs/common";
-import { Effect } from "effect";
+import { Effect as E } from "effect";
 
 import type { AnyHow } from ".";
-import type { NonCtxEffect } from "../types/non-context-effect.type";
+import type { NonCtxE } from "../types/non-context-effect.type";
 
 import { toError } from "../helpers/to-error.helper";
 
@@ -13,8 +13,8 @@ export class DatabaseInsertError implements AnyHow {
     return DatabaseInsertError._tag === err._tag;
   }
 
-  static into(error: unknown): NonCtxEffect<DatabaseInsertError, never> {
-    return Effect.fail(new DatabaseInsertError(error));
+  static into(error: unknown): NonCtxE<DatabaseInsertError, never> {
+    return E.fail(new DatabaseInsertError(error));
   }
 
   constructor(public readonly error: unknown) {}

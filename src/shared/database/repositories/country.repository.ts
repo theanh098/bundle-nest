@@ -1,11 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { sql } from "drizzle-orm";
-import { Effect, Option, ReadonlyArray, flow, pipe } from "effect";
+import { Effect as E, Option, ReadonlyArray, flow, pipe } from "effect";
 
 import type { DatabaseQueryNotFoundError } from "@root/shared/errors/database-query-not-found.error";
 import type { Country } from "@root/shared/IO/Country.io";
 import type { PaginateResponse } from "@root/shared/IO/Paginate.io";
-import type { NonCtxEffect } from "@root/shared/types/non-context-effect.type";
+import type { NonCtxE } from "@root/shared/types/non-context-effect.type";
 
 import { Database } from "@root/shared/database";
 import { InjectDb } from "@root/shared/decorators/database.decorator";
@@ -20,7 +20,7 @@ export class CountryRepository {
 
   public findById(
     id: number
-  ): NonCtxEffect<DatabaseQueryNotFoundError | DatabaseQueryError, Country> {
+  ): NonCtxE<DatabaseQueryNotFoundError | DatabaseQueryError, Country> {
     return safetyFindOne("countries", { id })(
       this.db.query.country.findFirst({
         where: (cols, opts) => opts.eq(cols.id, id),
@@ -35,14 +35,14 @@ export class CountryRepository {
     );
   }
 
-  public findAndCount(): NonCtxEffect<
+  public findAndCount(): NonCtxE<
     DatabaseQueryError,
     PaginateResponse<Country>
   > {
     return pipe(
       { nodes: this.find(), count: this.count() },
-      Effect.all,
-      Effect.map(({ count, nodes }) => ({
+      E.all,
+      E.map(({ count, nodes }) => ({
         limit: 10,
         nodes,
         page: 1,
@@ -51,8 +51,8 @@ export class CountryRepository {
     );
   }
 
-  private find(): NonCtxEffect<DatabaseQueryError, Country[]> {
-    return Effect.tryPromise({
+  private find(): NonCtxE<DatabaseQueryError, Country[]> {
+    return E.tryPromise({
       try: () =>
         this.db.query.country.findMany({
           offset: 0,
@@ -63,16 +63,16 @@ export class CountryRepository {
     });
   }
 
-  private count(): NonCtxEffect<DatabaseQueryError, number> {
+  private count(): NonCtxE<DatabaseQueryError, number> {
     return pipe(
-      Effect.tryPromise({
+      E.tryPromise({
         try: () =>
           this.db
             .select({ count: sql`count(*)`.mapWith(Number) })
             .from(country),
         catch: e => new DatabaseQueryError(e)
       }),
-      Effect.map(
+      E.map(
         flow(
           ReadonlyArray.head,
           Option.match({

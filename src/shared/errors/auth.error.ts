@@ -1,8 +1,8 @@
 import { UnauthorizedException } from "@nestjs/common";
-import { Effect } from "effect";
+import { Effect as E } from "effect";
 
 import type { AnyHow } from ".";
-import type { NonCtxEffect } from "../types/non-context-effect.type";
+import type { NonCtxE } from "../types/non-context-effect.type";
 
 export class AuthError implements AnyHow {
   static readonly _tag = "AuthError";
@@ -11,8 +11,8 @@ export class AuthError implements AnyHow {
     return AuthError._tag === err._tag;
   }
 
-  static into(reason?: string): NonCtxEffect<AuthError, never> {
-    return Effect.fail(new AuthError(reason));
+  static into(reason?: string): NonCtxE<AuthError, never> {
+    return E.fail(new AuthError(reason));
   }
 
   constructor(public readonly reason?: string) {}

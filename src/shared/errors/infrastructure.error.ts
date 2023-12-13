@@ -1,8 +1,8 @@
 import { InternalServerErrorException } from "@nestjs/common";
-import { Effect } from "effect";
+import { Effect as E } from "effect";
 
 import type { AnyHow } from ".";
-import type { NonCtxEffect } from "../types/non-context-effect.type";
+import type { NonCtxE } from "../types/non-context-effect.type";
 
 import { toError } from "../helpers/to-error.helper";
 
@@ -13,8 +13,8 @@ export class InfrastructureError implements AnyHow {
     return InfrastructureError._tag === err._tag;
   }
 
-  static into(error: unknown): NonCtxEffect<InfrastructureError, never> {
-    return Effect.fail(new InfrastructureError(error));
+  static into(error: unknown): NonCtxE<InfrastructureError, never> {
+    return E.fail(new InfrastructureError(error));
   }
 
   constructor(public readonly error: unknown) {}

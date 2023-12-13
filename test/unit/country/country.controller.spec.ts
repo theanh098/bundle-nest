@@ -1,5 +1,5 @@
 import { Test } from "@nestjs/testing";
-import { Effect } from "effect";
+import { Effect as E } from "effect";
 
 import type { Country } from "@root/shared/IO/Country.io";
 
@@ -32,7 +32,7 @@ describe("CatsController", () => {
 
       jest
         .spyOn(countryService, "getCountry")
-        .mockImplementation(() => Effect.succeed(mockCountry));
+        .mockImplementation(() => E.succeed(mockCountry));
 
       expect(await countryController.getCountry(1)).toEqual(mockCountry);
     });

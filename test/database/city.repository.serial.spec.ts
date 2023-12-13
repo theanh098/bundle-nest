@@ -1,6 +1,6 @@
 import { DbTestingClient } from "@test-helper/database.test.client";
 import { eq } from "drizzle-orm";
-import { Effect, Either, pipe } from "effect";
+import { Effect as E, Either, pipe } from "effect";
 
 import { city } from "@root/shared/database/models/city.model";
 import { country } from "@root/shared/database/models/country.model";
@@ -45,7 +45,7 @@ describe("CityRepository", () => {
       });
 
       it("should return correct city", () => {
-        pipe(cityRepository.findById(1), Effect.either, Effect.runPromise).then(
+        pipe(cityRepository.findById(1), E.either, E.runPromise).then(
           Either.match({
             onLeft: () => {
               throw Error("unexpected error");
@@ -68,7 +68,7 @@ describe("CityRepository", () => {
         jest
           .spyOn(client.database.query.city, "findFirst")
           .mockRejectedValue(new Error("query err"));
-        pipe(cityRepository.findById(1), Effect.either, Effect.runPromise).then(
+        pipe(cityRepository.findById(1), E.either, E.runPromise).then(
           Either.match({
             onLeft: error => {
               expect(DatabaseQueryError.isInfer(error)).toBeTruthy();
