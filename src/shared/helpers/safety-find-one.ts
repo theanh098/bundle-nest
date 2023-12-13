@@ -1,7 +1,7 @@
 import { Effect as E, pipe } from "effect";
 
 import type { BlazingTable } from "../database";
-import type { NonCtxE } from "../types/non-context-effect.type";
+import type { NonCtxEft } from "../types/non-context-effect.type";
 
 import { DatabaseQueryNotFoundError } from "../errors/database-query-not-found.error";
 import { DatabaseQueryError } from "../errors/database-query.error";
@@ -10,7 +10,10 @@ export const safetyFindOne =
   (table: BlazingTable, args?: unknown) =>
   <T>(
     promise: Promise<T>
-  ): NonCtxE<DatabaseQueryError | DatabaseQueryNotFoundError, NonNullable<T>> =>
+  ): NonCtxEft<
+    DatabaseQueryError | DatabaseQueryNotFoundError,
+    NonNullable<T>
+  > =>
     pipe(
       E.tryPromise({
         try: () => promise,

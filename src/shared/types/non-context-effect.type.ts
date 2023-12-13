@@ -1,3 +1,3 @@
-import type { Effect as E } from "effect";
+import { Effect } from "effect";
 
-export type NonCtxE<E, A> = E.Effect<never, E, A>;
+export type NonCtxEft<E, A> = Effect.Effect<never, E, A>;

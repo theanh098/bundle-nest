@@ -2,7 +2,7 @@ import { InternalServerErrorException } from "@nestjs/common";
 import { Effect as E } from "effect";
 
 import type { AnyHow } from ".";
-import type { NonCtxE } from "../types/non-context-effect.type";
+import type { NonCtxEft } from "../types/non-context-effect.type";
 
 export class MissingEnvironmentError implements AnyHow {
   static readonly _tag = "MissingEnvironmentError";
@@ -11,7 +11,7 @@ export class MissingEnvironmentError implements AnyHow {
     return MissingEnvironmentError._tag === err._tag;
   }
 
-  static into(config: string): NonCtxE<MissingEnvironmentError, never> {
+  static into(config: string): NonCtxEft<MissingEnvironmentError, never> {
     return E.fail(new MissingEnvironmentError(config));
   }
 

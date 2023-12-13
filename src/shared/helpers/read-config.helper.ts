@@ -1,6 +1,6 @@
 import { Config, Effect as E, Option, pipe } from "effect";
 
-import type { NonCtxE } from "../types/non-context-effect.type";
+import type { NonCtxEft } from "../types/non-context-effect.type";
 import type { ConfigService } from "@nestjs/config";
 
 import { MissingEnvironmentError } from "../errors/missing-environment.error";
@@ -22,7 +22,7 @@ export const readConfigOrExit =
 
 export const readConfig = (
   config: string
-): NonCtxE<MissingEnvironmentError, string> =>
+): NonCtxEft<MissingEnvironmentError, string> =>
   pipe(
     E.config(Config.string(config)),
     E.mapError(() => new MissingEnvironmentError(config))

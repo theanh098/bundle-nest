@@ -2,7 +2,7 @@ import { InternalServerErrorException } from "@nestjs/common";
 import { Effect as E } from "effect";
 
 import type { AnyHow } from ".";
-import type { NonCtxE } from "../types/non-context-effect.type";
+import type { NonCtxEft } from "../types/non-context-effect.type";
 
 import { toError } from "../helpers/to-error.helper";
 
@@ -13,7 +13,7 @@ export class DatabaseUpdateError implements AnyHow {
     return DatabaseUpdateError._tag === err._tag;
   }
 
-  static into(error: unknown): NonCtxE<DatabaseUpdateError, never> {
+  static into(error: unknown): NonCtxEft<DatabaseUpdateError, never> {
     return E.fail(new DatabaseUpdateError(error));
   }
 

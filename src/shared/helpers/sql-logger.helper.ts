@@ -1,6 +1,7 @@
 import highlight from "cli-highlight";
-import { LogWriter } from "drizzle-orm";
 import { pipe } from "effect";
+
+import type { LogWriter } from "drizzle-orm";
 
 export class SqlLogger implements LogWriter {
   static log(statement: string) {

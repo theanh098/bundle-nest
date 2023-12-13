@@ -3,7 +3,7 @@ import { Effect as E } from "effect";
 
 import type { AnyHow } from ".";
 import type { BlazingTable } from "../database";
-import type { NonCtxE } from "../types/non-context-effect.type";
+import type { NonCtxEft } from "../types/non-context-effect.type";
 
 export class DatabaseQueryNotFoundError implements AnyHow {
   static readonly _tag = "DatabaseQueryNotFoundError";
@@ -15,7 +15,7 @@ export class DatabaseQueryNotFoundError implements AnyHow {
   static into(
     table: BlazingTable,
     args: unknown
-  ): NonCtxE<DatabaseQueryNotFoundError, never> {
+  ): NonCtxEft<DatabaseQueryNotFoundError, never> {
     return E.fail(new DatabaseQueryNotFoundError(table, args));
   }
 

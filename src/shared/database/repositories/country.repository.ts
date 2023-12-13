@@ -5,7 +5,7 @@ import { Effect as E, Option, ReadonlyArray, flow, pipe } from "effect";
 import type { DatabaseQueryNotFoundError } from "@root/shared/errors/database-query-not-found.error";
 import type { Country } from "@root/shared/IO/Country.io";
 import type { PaginateResponse } from "@root/shared/IO/Paginate.io";
-import type { NonCtxE } from "@root/shared/types/non-context-effect.type";
+import type { NonCtxEft } from "@root/shared/types/non-context-effect.type";
 
 import { Database } from "@root/shared/database";
 import { InjectDb } from "@root/shared/decorators/database.decorator";
@@ -20,7 +20,7 @@ export class CountryRepository {
 
   public findById(
     id: number
-  ): NonCtxE<DatabaseQueryNotFoundError | DatabaseQueryError, Country> {
+  ): NonCtxEft<DatabaseQueryNotFoundError | DatabaseQueryError, Country> {
     return safetyFindOne("countries", { id })(
       this.db.query.country.findFirst({
         where: (cols, opts) => opts.eq(cols.id, id),
@@ -35,7 +35,7 @@ export class CountryRepository {
     );
   }
 
-  public findAndCount(): NonCtxE<
+  public findAndCount(): NonCtxEft<
     DatabaseQueryError,
     PaginateResponse<Country>
   > {
@@ -51,19 +51,19 @@ export class CountryRepository {
     );
   }
 
-  private find(): NonCtxE<DatabaseQueryError, Country[]> {
+  private find(): NonCtxEft<DatabaseQueryError, Country[]> {
     return E.tryPromise({
       try: () =>
         this.db.query.country.findMany({
           offset: 0,
           limit: 10,
-          orderBy: ({ id, name }, { desc }) => Array(desc(id), desc(name))
+          orderBy: ({ id, name }, { desc }) => [desc(id), desc(name)]
         }),
       catch: e => new DatabaseQueryError(e)
     });
   }
 
-  private count(): NonCtxE<DatabaseQueryError, number> {
+  private count(): NonCtxEft<DatabaseQueryError, number> {
     return pipe(
       E.tryPromise({
         try: () =>
