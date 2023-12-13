@@ -1,4 +1,4 @@
-import { TestDatabse } from "@test-helper/database.test.client";
+import { DbTestingClient } from "@test-helper/database.test.client";
 import { eq } from "drizzle-orm";
 import { Effect, Either, pipe } from "effect";
 
@@ -8,7 +8,7 @@ import { CountryRepository } from "@root/shared/database/repositories/country.re
 import { DatabaseQueryError } from "@root/shared/errors/database-query.error";
 
 describe("CountryRepository", () => {
-  const client = new TestDatabse();
+  const client = new DbTestingClient();
   let countryRepository: CountryRepository;
 
   beforeAll(() => {

@@ -1,8 +1,8 @@
-import { TestDatabse } from "@test-helper/database.test.client";
+import { DbTestingClient } from "@test-helper/database.test.client";
 import { sql } from "drizzle-orm";
 
 async function main() {
-  const client = new TestDatabse();
+  const client = new DbTestingClient();
 
   const tables = Object.keys(client.database._.tableNamesMap);
 
