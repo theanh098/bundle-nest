@@ -19,8 +19,8 @@ describe("CountryRepository", () => {
     jest.restoreAllMocks();
   });
 
-  afterAll(async () => {
-    await client.disconnect();
+  afterAll(() => {
+    client.disconnect();
   });
 
   describe("findById", () => {
