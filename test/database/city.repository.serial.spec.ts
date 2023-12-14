@@ -1,11 +1,11 @@
 import { DbTestingClient } from "@test-helper/database.test.client";
 import { eq } from "drizzle-orm";
-import { Effect as E, Either, pipe } from "effect";
 
 import { city } from "@root/shared/database/models/city.model";
 import { country } from "@root/shared/database/models/country.model";
 import { CityRepository } from "@root/shared/database/repositories/city.repository";
 import { DatabaseQueryError } from "@root/shared/errors/database-query.error";
+import { assertEffect } from "@test-helper/assert-effect";
 
 describe("CityRepository", () => {
   const client = new DbTestingClient();
@@ -45,20 +45,17 @@ describe("CityRepository", () => {
       });
 
       it("should return correct city", () => {
-        pipe(cityRepository.findById(1), E.either, E.runPromise).then(
-          Either.match({
-            onLeft: () => {
-              throw Error("unexpected error");
-            },
-            onRight: city => {
-              expect(city).toEqual({
-                countryId: 1,
-                id: 1,
-                name: "Mumbai",
-                popularity: "popular"
-              });
-            }
-          })
+        assertEffect(cityRepository.findById(1))(
+          () => {
+            throw Error("unexpected error");
+          },
+          city =>
+            expect(city).toEqual({
+              countryId: 1,
+              id: 1,
+              name: "Mumbai",
+              popularity: "popular"
+            })
         );
       });
     });
@@ -67,16 +64,13 @@ describe("CityRepository", () => {
       it("should return DatabaseQueryError", () => {
         jest
           .spyOn(client.database.query.city, "findFirst")
-          .mockRejectedValue(new Error("query err"));
-        pipe(cityRepository.findById(1), E.either, E.runPromise).then(
-          Either.match({
-            onLeft: error => {
-              expect(DatabaseQueryError.isInfer(error)).toBeTruthy();
-            },
-            onRight: () => {
-              throw new Error("unexpected success");
-            }
-          })
+          .mockRejectedValue(Error("query err"));
+
+        assertEffect(cityRepository.findById(1))(
+          error => expect(DatabaseQueryError.isInfer(error)).toBeTruthy(),
+          () => {
+            throw Error("unexpected success");
+          }
         );
       });
     });

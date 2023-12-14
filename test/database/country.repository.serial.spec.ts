@@ -1,11 +1,11 @@
 import { DbTestingClient } from "@test-helper/database.test.client";
 import { eq } from "drizzle-orm";
-import { Effect as E, Either, pipe } from "effect";
 
 import { city } from "@root/shared/database/models/city.model";
 import { country } from "@root/shared/database/models/country.model";
 import { CountryRepository } from "@root/shared/database/repositories/country.repository";
 import { DatabaseQueryError } from "@root/shared/errors/database-query.error";
+import { assertEffect } from "@test-helper/assert-effect";
 
 describe("CountryRepository", () => {
   const client = new DbTestingClient();
@@ -43,19 +43,16 @@ describe("CountryRepository", () => {
       });
 
       it("should return correct country", () => {
-        pipe(countryRepository.findById(1), E.either, E.runPromise).then(
-          Either.match({
-            onLeft: () => {
-              throw new Error("unexpected error");
-            },
-            onRight: country => {
-              expect(country).toEqual({
-                name: "India",
-                id: 1,
-                cities: [{ name: "Mumbai" }]
-              });
-            }
-          })
+        assertEffect(countryRepository.findById(1))(
+          () => {
+            throw new Error("unexpected error");
+          },
+          country =>
+            expect(country).toEqual({
+              name: "India",
+              id: 1,
+              cities: [{ name: "Mumbai" }]
+            })
         );
       });
     });
@@ -66,15 +63,13 @@ describe("CountryRepository", () => {
           .spyOn(client.database.query.country, "findFirst")
           .mockRejectedValue(new Error("query err"));
 
-        pipe(countryRepository.findById(1), E.either, E.runPromise).then(
-          Either.match({
-            onRight: () => {
-              throw Error("unexpected succeed");
-            },
-            onLeft: e => {
-              expect(DatabaseQueryError.isInfer(e)).toBeTruthy();
-            }
-          })
+        assertEffect(countryRepository.findById(1))(
+          e => {
+            expect(DatabaseQueryError.isInfer(e)).toBeTruthy();
+          },
+          () => {
+            throw Error("unexpected succeed");
+          }
         );
       });
     });
