@@ -1,3 +1,4 @@
+import { assertEffect } from "@test-helper/assert-effect";
 import { DbTestingClient } from "@test-helper/database.test.client";
 import { eq } from "drizzle-orm";
 
@@ -5,7 +6,6 @@ import { city } from "@root/shared/database/models/city.model";
 import { country } from "@root/shared/database/models/country.model";
 import { CityRepository } from "@root/shared/database/repositories/city.repository";
 import { DatabaseQueryError } from "@root/shared/errors/database-query.error";
-import { assertEffect } from "@test-helper/assert-effect";
 
 describe("CityRepository", () => {
   const client = new DbTestingClient();

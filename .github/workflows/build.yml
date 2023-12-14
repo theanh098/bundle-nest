@@ -6,8 +6,9 @@ on:
       - main
 
 jobs:
-  setups:
+  build-and-test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -39,50 +40,22 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Install docker compose
+      - name: Bundle
+        run: pnpm bundle
+
+      - name: Check lint
+        run: pnpm lint
+
+      - name: test
         shell: bash
         run: |
           sudo curl -SL https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
-
-  bundle:
-    runs-on: ubuntu-latest
-    needs: setups
-    steps:
-      - name: Bundle
-        run: pnpm bundle
-
-  lint:
-    runs-on: ubuntu-lastes
-    needs: setups
-    steps:
-      - name: Check lint
-        run: pnpm lint
-
-  test-e2e:
-    runs-on: ubuntu-latest
-    needs: setups
-    steps:
-      - name: Test e2e
-        run: pnpm test:e2e
-
-  test-database:
-    runs-on: ubuntu-latest
-    needs: setups
-    steps:
-      - name: Test e2e
-        run: pnpm test:database
-
-  test-unit:
-    runs-on: ubuntu-latest
-    needs: setups
-    steps:
-      - name: Test e2e
-        run: pnpm test:unit
+          pnpm test
 
   ping-on-slack:
     runs-on: ubuntu-latest
-    needs: [bundle, lint, test-e2e, test-database, test-unit]
+    needs: build-and-test
     if: always()
     steps:
       - name: Set Emoji
