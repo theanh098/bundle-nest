@@ -1,11 +1,10 @@
 import { Test } from "@nestjs/testing";
 import { Effect as E } from "effect";
 
-import type { Country } from "@root/shared/IO/Country.io";
-
 import { AppModule } from "@root/app.module";
 import { CountryController } from "@root/country/country.controller";
 import { CountryService } from "@root/country/country.service";
+import type { Country } from "@root/shared/IO/Country.io";
 
 describe("CatsController", () => {
   let countryController: CountryController;

@@ -2,9 +2,8 @@ import { InternalServerErrorException } from "@nestjs/common";
 import { Effect as E } from "effect";
 
 import type { AnyHow } from ".";
-import type { NonCtxEft } from "../types/non-context-effect.type";
-
 import { toError } from "../helpers/to-error.helper";
+import type { NonCtxEft } from "../types/non-context-effect.type";
 
 export class DatabaseInsertError implements AnyHow {
   static readonly _tag = "DatabaseInsertError";

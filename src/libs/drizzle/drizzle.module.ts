@@ -1,7 +1,6 @@
-import { ConfigService } from "@nestjs/config";
-
 import type { DynamicModule } from "@nestjs/common";
 import { Global, Module } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 
 import { DATABASE } from "@root/shared/constants/token.constant";
 import type { Database } from "@root/shared/database";

@@ -1,11 +1,10 @@
-import { describe } from "node:test";
-import request from "supertest";
-
 import type { INestApplication } from "@nestjs/common";
 import { FastifyAdapter } from "@nestjs/platform-fastify";
 import type { NestFastifyApplication } from "@nestjs/platform-fastify";
 import type { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
+import { describe } from "node:test";
+import request from "supertest";
 
 import { AppModule } from "@root/app.module";
 

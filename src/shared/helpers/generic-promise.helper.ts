@@ -1,9 +1,8 @@
 import { Effect as E, Either } from "effect";
 
-import type { NonCtxEft } from "../types/non-context-effect.type";
-
 import type { AnyHow } from "../errors";
 import { encodeError } from "../errors";
+import type { NonCtxEft } from "../types/non-context-effect.type";
 
 export const genericPromise = <E extends AnyHow, A>(
   effect: NonCtxEft<E, A>
