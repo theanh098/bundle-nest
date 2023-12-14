@@ -24,7 +24,11 @@ function main() {
         "@nestjs/websockets",
         "cache-manager",
         "class-transformer",
-        "class-validator"
+        "class-validator",
+        /// fastify option
+        "@fastify/static",
+        "@nestjs/platform-express",
+        "@fastify/view"
       ]
     })
     .then(() => console.log("finished"));

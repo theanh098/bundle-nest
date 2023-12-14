@@ -1,17 +1,16 @@
-import { Config, Effect, Option, pipe } from "effect";
-
-import type { NonCtxEffect } from "../types/non-context-effect.type";
 import type { ConfigService } from "@nestjs/config";
+import { Config, Effect as E, Option as O, pipe } from "effect";
 
 import { MissingEnvironmentError } from "../errors/missing-environment.error";
+import type { NonCtxEft } from "../types/non-context-effect.type";
 
 export const readConfigOrExit =
   (configService: ConfigService) =>
   (config: string): string =>
     pipe(
       configService.get<string | undefined>(config),
-      Option.fromNullable,
-      Option.match({
+      O.fromNullable,
+      O.match({
         onNone: () => {
           console.error(`Missing ${config} env`);
           process.exit();
@@ -22,8 +21,8 @@ export const readConfigOrExit =
 
 export const readConfig = (
   config: string
-): NonCtxEffect<MissingEnvironmentError, string> =>
+): NonCtxEft<MissingEnvironmentError, string> =>
   pipe(
-    Effect.config(Config.string(config)),
-    Effect.mapError(() => new MissingEnvironmentError(config))
+    E.config(Config.string(config)),
+    E.mapError(() => new MissingEnvironmentError(config))
   );

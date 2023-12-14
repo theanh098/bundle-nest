@@ -1,12 +1,10 @@
 import { Test } from "@nestjs/testing";
-import { Effect } from "effect";
-import { afterEach, beforeAll, describe, expect, it, suite, vi } from "vitest";
-
-import type { Country } from "@root/shared/IO/Country.io";
+import { Effect as E } from "effect";
 
 import { AppModule } from "@root/app.module";
 import { CountryController } from "@root/country/country.controller";
 import { CountryService } from "@root/country/country.service";
+import type { Country } from "@root/shared/IO/Country.io";
 
 describe("CatsController", () => {
   let countryController: CountryController;
@@ -14,7 +12,9 @@ describe("CatsController", () => {
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule]
+      imports: [AppModule],
+      controllers: [CountryController],
+      providers: [CountryService]
     }).compile();
 
     countryService = moduleRef.get<CountryService>(CountryService);
@@ -22,16 +22,16 @@ describe("CatsController", () => {
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
+    jest.restoreAllMocks();
   });
 
-  suite("getCountry", () => {
+  describe("getCountry", () => {
     it("should return a country correctly", async () => {
       const mockCountry: Country = { id: 1, name: "india" };
 
-      vi.spyOn(countryService, "getCountry").mockReturnValue(
-        Effect.succeed(mockCountry)
-      );
+      jest
+        .spyOn(countryService, "getCountry")
+        .mockImplementation(() => E.succeed(mockCountry));
 
       expect(await countryController.getCountry(1)).toEqual(mockCountry);
     });

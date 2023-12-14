@@ -46,12 +46,7 @@ module.exports = {
       "error",
       {
         newlinesBetween: "always",
-        groups: [
-          "module",
-          "type",
-          "/^@root/"
-          // ["parent", "sibling", "index", "type"]
-        ],
+        groups: ["module", "/^@root/", ["parent", "sibling", "index"]],
         alphabetize: {
           order: "asc",
           ignoreCase: true

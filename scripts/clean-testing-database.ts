@@ -1,18 +1,19 @@
-import { getDatabase } from "@root/shared/database";
+import { DbTestingClient } from "@test-helper/database.test.client";
 import { sql } from "drizzle-orm";
-import { TEST_DATABASE_CONNECTION } from "test-helper/database.test.client";
 
 async function main() {
-  const db = getDatabase({
-    connectionString: TEST_DATABASE_CONNECTION
-  });
+  const client = new DbTestingClient();
 
-  const tables = Object.keys(db._.tableNamesMap);
+  const tables = Object.keys(client.database._.tableNamesMap);
 
   for (const table of tables) {
-    await db.execute(sql.raw(`DROP TABLE IF EXISTS ${table} CASCADE`));
+    await client.database.execute(
+      sql.raw(`DROP TABLE IF EXISTS ${table} CASCADE`)
+    );
     console.log(`Droped ${table} table.`);
   }
+
+  await client.disconnect();
 }
 
 main()

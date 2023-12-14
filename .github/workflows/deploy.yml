@@ -37,21 +37,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
+      - name: Install docker compose
+        shell: bash
+        run: |
+          sudo curl -SL https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+
       - name: Install dependencies
         run: pnpm install
 
       - name: Bundle
         run: pnpm bundle
 
-      - name: Check lint
-        run: pnpm lint
-
-      - name: test
-        shell: bash
-        run: |
-          sudo curl -SL https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          pnpm test
+      - name: Check
+        run: pnpm check
 
       - name: Upload bundle
         uses: appleboy/scp-action@v0.1.4

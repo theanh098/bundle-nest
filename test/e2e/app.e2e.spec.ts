@@ -1,10 +1,10 @@
-import { describe } from "node:test";
-import request from "supertest";
-import { beforeEach, expect, it } from "vitest";
-
 import type { INestApplication } from "@nestjs/common";
+import { FastifyAdapter } from "@nestjs/platform-fastify";
+import type { NestFastifyApplication } from "@nestjs/platform-fastify";
 import type { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
+import { describe } from "node:test";
+import request from "supertest";
 
 import { AppModule } from "@root/app.module";
 
@@ -16,16 +16,19 @@ describe("AppController (e2e)", () => {
       imports: [AppModule]
     }).compile();
 
-    app = moduleFixture.createNestApplication();
+    app = moduleFixture.createNestApplication<NestFastifyApplication>(
+      new FastifyAdapter()
+    );
+
     await app.init();
+    await app.getHttpAdapter().getInstance().ready();
   });
 
-  it("/ (GET)", () => {
-    return request(app.getHttpServer())
+  it("/ (GET)", () =>
+    request(app.getHttpServer())
       .get("/")
       .expect(res => {
         expect(res.ok).toBeTruthy();
         expect(res.text).toBe("Hello Kitty!");
-      });
-  });
+      }));
 });

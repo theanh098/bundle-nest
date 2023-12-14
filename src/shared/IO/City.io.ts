@@ -1,5 +1,4 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-
 import type { z } from "zod";
 
 import { city } from "../database/models/city.model";
