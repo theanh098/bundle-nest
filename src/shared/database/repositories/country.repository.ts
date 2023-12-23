@@ -1,20 +1,14 @@
 import { Injectable } from "@nestjs/common";
 import { sql } from "drizzle-orm";
-import {
-  Effect as E,
-  Option as O,
-  ReadonlyArray as RA,
-  flow,
-  pipe
-} from "effect";
+import { Effect as E, Option as O, ReadonlyArray as RA, pipe } from "effect";
 
+import type { Country } from "@root/shared/IO/Country.io";
+import type { PaginateResponse } from "@root/shared/IO/Paginate.io";
 import { Database } from "@root/shared/database";
 import { InjectDb } from "@root/shared/decorators/database.decorator";
 import type { DatabaseQueryNotFoundError } from "@root/shared/errors/database-query-not-found.error";
 import { DatabaseQueryError } from "@root/shared/errors/database-query.error";
 import { safetyFindOne } from "@root/shared/helpers/safety-find-one";
-import type { Country } from "@root/shared/IO/Country.io";
-import type { PaginateResponse } from "@root/shared/IO/Paginate.io";
 import type { NonCtxEft } from "@root/shared/types/non-context-effect.type";
 
 import { country } from "../models/country.model";
@@ -77,14 +71,12 @@ export class CountryRepository {
             .from(country),
         catch: e => new DatabaseQueryError(e)
       }),
+      E.map(RA.head),
       E.map(
-        flow(
-          RA.head,
-          O.match({
-            onNone: () => 0,
-            onSome: ({ count }) => count
-          })
-        )
+        O.match({
+          onNone: () => 0,
+          onSome: ({ count }) => count
+        })
       )
     );
   }
