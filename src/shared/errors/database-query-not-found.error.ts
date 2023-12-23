@@ -8,7 +8,7 @@ import type { NonCtxEft } from "../types/non-context-effect.type";
 export class DatabaseQueryNotFoundError implements AnyHow {
   static readonly _tag = "DatabaseQueryNotFoundError";
 
-  static isInfer(err: AnyHow): err is DatabaseQueryNotFoundError {
+  static infer(err: AnyHow): err is DatabaseQueryNotFoundError {
     return DatabaseQueryNotFoundError._tag === err._tag;
   }
 

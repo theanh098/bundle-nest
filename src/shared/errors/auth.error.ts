@@ -7,7 +7,7 @@ import type { NonCtxEft } from "../types/non-context-effect.type";
 export class AuthError implements AnyHow {
   static readonly _tag = "AuthError";
 
-  static isInfer(err: AnyHow): err is AuthError {
+  static infer(err: AnyHow): err is AuthError {
     return AuthError._tag === err._tag;
   }
 

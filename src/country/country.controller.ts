@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from "@nestjs/common";
 
-import { genericPromise } from "@root/shared/helpers/generic-promise.helper";
+import { genericApi } from "@root/shared/helpers/generic-api.helper";
 import type { Country } from "@root/shared/IO/Country.io";
 import type { PaginateResponse } from "@root/shared/IO/Paginate.io";
 
@@ -12,11 +12,11 @@ export class CountryController {
 
   @Get()
   getCountryList(): Promise<PaginateResponse<Country>> {
-    return genericPromise(this.countryService.getCountryList());
+    return genericApi(this.countryService.getCountryList());
   }
 
   @Get(":id")
   getCountry(@Param("id") id: number) {
-    return genericPromise(this.countryService.getCountry(+id));
+    return genericApi(this.countryService.getCountry(+id));
   }
 }

@@ -8,7 +8,7 @@ import type { NonCtxEft } from "../types/non-context-effect.type";
 export class InfrastructureError implements AnyHow {
   static readonly _tag = "InfrastructureError";
 
-  static isInfer(err: AnyHow): err is InfrastructureError {
+  static infer(err: AnyHow): err is InfrastructureError {
     return InfrastructureError._tag === err._tag;
   }
 

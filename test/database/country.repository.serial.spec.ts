@@ -65,7 +65,7 @@ describe("CountryRepository", () => {
 
         assertEffect(countryRepository.findById(1))(
           e => {
-            expect(DatabaseQueryError.isInfer(e)).toBeTruthy();
+            expect(DatabaseQueryError.infer(e)).toBeTruthy();
           },
           () => {
             throw Error("unexpected succeed");

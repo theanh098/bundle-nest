@@ -67,7 +67,7 @@ describe("CityRepository", () => {
           .mockRejectedValue(Error("query err"));
 
         assertEffect(cityRepository.findById(1))(
-          error => expect(DatabaseQueryError.isInfer(error)).toBeTruthy(),
+          error => expect(DatabaseQueryError.infer(error)).toBeTruthy(),
           () => {
             throw Error("unexpected success");
           }

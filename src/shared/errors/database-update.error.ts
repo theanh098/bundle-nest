@@ -8,7 +8,7 @@ import type { NonCtxEft } from "../types/non-context-effect.type";
 export class DatabaseUpdateError implements AnyHow {
   static readonly _tag = "DatabaseUpdateError";
 
-  static isInfer(err: AnyHow): err is DatabaseUpdateError {
+  static infer(err: AnyHow): err is DatabaseUpdateError {
     return DatabaseUpdateError._tag === err._tag;
   }
 
